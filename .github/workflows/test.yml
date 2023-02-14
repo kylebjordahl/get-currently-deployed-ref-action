@@ -36,6 +36,8 @@ jobs:
         with:
           environment: test
           token: ${{ github.token }}
-      - run: |
-          ["${{ steps.test_action.outputs.ref }}" == "${{ github.ref_name }}"]
+      - name: Check output of the action
+        # the output should match the ref of the running action, since the last deploy was created from this workflow
+        run: |
+          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.ref_name }}" ]
 
