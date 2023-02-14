@@ -37,5 +37,5 @@ jobs:
           environment: test
           token: ${{ github.token }}
       - run: |
-          ["${{ steps.test_action.ref }}" == "${{ github.ref }}"]
+          ["${{ steps.test_action.outputs.ref }}" == "${{ github.ref_name }}"]
 
