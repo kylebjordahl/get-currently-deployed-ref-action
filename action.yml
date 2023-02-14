@@ -1,11 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: Get Currently Deployed Ref
+description: 'Get the ref which is currently deployed in the supplied environment'
+author: Kyle Bjordahl
 inputs:
-  milliseconds: # change this
+  environment: 
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The environment to check for the latest deployment'
+  token: 
+    required: true
+    description: 'GitHub token with read access to deployment and statuses'
 runs:
   using: 'node16'
   main: 'dist/index.js'
