@@ -39,7 +39,7 @@ exports.getLatestGoodDeploymentRef = void 0;
 /* eslint-disable filenames/match-regex */
 const github = __importStar(__nccwpck_require__(5438));
 function getLatestGoodDeploymentRef(args) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         const octo = github.getOctokit(args.token);
         const { repository } = yield octo.graphql(`
@@ -76,7 +76,7 @@ function getLatestGoodDeploymentRef(args) {
         const deploy = (_b = (_a = repository === null || repository === void 0 ? void 0 : repository.deployments) === null || _a === void 0 ? void 0 : _a.nodes) === null || _b === void 0 ? void 0 : _b.find(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (d) => { var _a; return ((_a = d === null || d === void 0 ? void 0 : d.latestStatus) === null || _a === void 0 ? void 0 : _a.state) === 'SUCCESS'; });
-        return (_c = deploy.ref.name) !== null && _c !== void 0 ? _c : undefined;
+        return (_d = (_c = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : undefined;
     });
 }
 exports.getLatestGoodDeploymentRef = getLatestGoodDeploymentRef;
