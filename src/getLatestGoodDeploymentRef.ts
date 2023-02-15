@@ -46,5 +46,5 @@ export async function getLatestGoodDeploymentRef(args: {
     (d: any) => d?.latestStatus?.state === 'SUCCESS'
   )
 
-  return deploy.ref.name ?? undefined
+  return deploy?.ref?.name ?? undefined
 }
