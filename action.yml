@@ -8,6 +8,10 @@ inputs:
   token: 
     required: true
     description: 'GitHub token with read access to deployment and statuses'
+outputs:
+  ref:
+    description: The git ref associated with the latest successful deployment to the environment
+
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
