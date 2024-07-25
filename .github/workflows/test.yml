@@ -6,6 +6,9 @@ on: # rebuild any PRs and main branch changes
       - main
       - 'releases/*'
 
+env:
+  NODE_OPTIONS: --openssl-legacy-provider
+
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
@@ -39,5 +42,5 @@ jobs:
       - name: Check output of the action
         # the output should match the ref of the running action, since the last deploy was created from this workflow
         run: |
-          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.ref_name }}" ]
+          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.head_ref || github.ref_name }}" ]
 
