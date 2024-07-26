@@ -1,12 +1,17 @@
 /* eslint-disable filenames/match-regex */
 import * as github from '@actions/github'
 
+export interface LatestGoodDeploymentRef {
+  ref: string | undefined
+  sha: string | undefined
+}
+
 export async function getLatestGoodDeploymentRef(args: {
   token: string
   environment: string
   repoOwner: string
   repoName: string
-}): Promise<string | undefined> {
+}): Promise<LatestGoodDeploymentRef | undefined> {
   const octo = github.getOctokit(args.token)
 
   const {repository} = await octo.graphql(`
@@ -31,6 +36,9 @@ export async function getLatestGoodDeploymentRef(args: {
             ref {
               id
               name
+              target {
+                oid
+              }
             }
             latestStatus {
               state
@@ -46,5 +54,8 @@ export async function getLatestGoodDeploymentRef(args: {
     (d: any) => d?.latestStatus?.state === 'SUCCESS'
   )
 
-  return deploy?.ref?.name ?? undefined
+  return {
+    ref: deploy?.ref?.name ?? undefined,
+    sha: deploy?.ref?.target?.oid ?? undefined
+  }
 }
