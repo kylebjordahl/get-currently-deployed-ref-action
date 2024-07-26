@@ -11,6 +11,8 @@ inputs:
 outputs:
   ref:
     description: The git ref associated with the latest successful deployment to the environment
+  sha:
+    description: The full git sha (Object ID) associated with the latest successful deployment to the environment
 
 runs:
   using: 'node20'

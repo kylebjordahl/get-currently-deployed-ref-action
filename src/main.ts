@@ -9,13 +9,14 @@ async function run(): Promise<void> {
       token: core.getInput('token', {required: true})
     }
 
-    const ref = await getLatestGoodDeploymentRef({
+    const result = await getLatestGoodDeploymentRef({
       ...inputs,
       repoName: github.context.repo.repo,
       repoOwner: github.context.repo.owner
     })
 
-    core.setOutput('ref', ref)
+    core.setOutput('ref', result?.ref)
+    core.setOutput('sha', result?.sha)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
