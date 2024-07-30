@@ -33,12 +33,10 @@ export async function getLatestGoodDeploymentRef(args: {
           
           nodes{
             environment
+            commitOid
             ref {
               id
               name
-              target {
-                oid
-              }
             }
             latestStatus {
               state
@@ -56,6 +54,6 @@ export async function getLatestGoodDeploymentRef(args: {
 
   return {
     ref: deploy?.ref?.name ?? undefined,
-    sha: deploy?.ref?.target?.oid ?? undefined
+    sha: deploy?.ref?.commitOid ?? undefined
   }
 }
