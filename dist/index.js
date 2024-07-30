@@ -39,7 +39,7 @@ exports.getLatestGoodDeploymentRef = void 0;
 /* eslint-disable filenames/match-regex */
 const github = __importStar(__nccwpck_require__(5438));
 function getLatestGoodDeploymentRef(args) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f;
     return __awaiter(this, void 0, void 0, function* () {
         const octo = github.getOctokit(args.token);
         const { repository } = yield octo.graphql(`
@@ -61,12 +61,10 @@ function getLatestGoodDeploymentRef(args) {
           
           nodes{
             environment
+            commitOid
             ref {
               id
               name
-              target {
-                oid
-              }
             }
             latestStatus {
               state
@@ -81,7 +79,7 @@ function getLatestGoodDeploymentRef(args) {
         (d) => { var _a; return ((_a = d === null || d === void 0 ? void 0 : d.latestStatus) === null || _a === void 0 ? void 0 : _a.state) === 'SUCCESS'; });
         return {
             ref: (_d = (_c = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : undefined,
-            sha: (_g = (_f = (_e = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _e === void 0 ? void 0 : _e.target) === null || _f === void 0 ? void 0 : _f.oid) !== null && _g !== void 0 ? _g : undefined
+            sha: (_f = (_e = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _e === void 0 ? void 0 : _e.commitOid) !== null && _f !== void 0 ? _f : undefined
         };
     });
 }
