@@ -73,6 +73,6 @@ export async function getLatestGoodDeploymentRef(args: {
 
   return {
     ref: deploy?.ref?.name ?? undefined,
-    sha: deploy?.ref?.commitOid ?? undefined
+    sha: deploy?.commitOid ?? undefined
   }
 }
