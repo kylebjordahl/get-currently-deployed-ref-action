@@ -9,6 +9,10 @@ on: # rebuild any PRs and main branch changes
 env:
   NODE_OPTIONS: --openssl-legacy-provider
 
+concurrency:
+  cancel-in-progress: false
+  group: test
+
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
@@ -39,6 +43,10 @@ jobs:
         with:
           environment: test
           token: ${{ github.token }}
+
+      - name: Debug test outputs
+        run: echo "${{ toJson(steps.test_action.outputs) }}"
+
       - name: Check output of the action
         # the output should match the ref of the running action, since the last deploy was created from this workflow
         run: |
