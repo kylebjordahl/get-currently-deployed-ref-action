@@ -1,4 +1,5 @@
 /* eslint-disable filenames/match-regex */
+import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 export interface LatestGoodDeploymentRef {
@@ -51,6 +52,16 @@ export async function getLatestGoodDeploymentRef(args: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (d: any) => d?.latestStatus?.state === 'SUCCESS'
   )
+
+  if (deploy) {
+    core.info(
+      `found last successful deployment \n${JSON.stringify(
+        deploy,
+        undefined,
+        2
+      )}`
+    )
+  }
 
   return {
     ref: deploy?.ref?.name ?? undefined,
