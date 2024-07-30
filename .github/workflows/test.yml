@@ -33,12 +33,12 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - fake-deploy
-      - build
     permissions:
       deployments: read
       statuses: read
     steps:
       - uses: actions/checkout@v4
+      - run: npm run build && npm run package
       - id: test_action
         uses: ./
         with:
