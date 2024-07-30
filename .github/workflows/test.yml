@@ -27,7 +27,7 @@ jobs:
 
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - fake-deploy
     permissions:
       deployments: read
@@ -42,5 +42,4 @@ jobs:
       - name: Check output of the action
         # the output should match the ref of the running action, since the last deploy was created from this workflow
         run: |
-          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.head_ref || github.ref_name }}" ]
-
+          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.head_ref || github.ref_name }}" ] && [ "${{ steps.test_action.outputs.sha }}" = "${{ github.sha }}" ]
