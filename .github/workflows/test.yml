@@ -21,7 +21,7 @@ jobs:
   # make a fake deploy to detect
   fake-deploy:
     runs-on: ubuntu-latest
-    environment: test
+    environment: test-${{github.ref_name}}
     steps:
       - run: echo ${{ github.ref }}
 
@@ -37,9 +37,9 @@ jobs:
       - id: test_action
         uses: ./
         with:
-          environment: test
+          environment: test-${{github.ref_name}}
           token: ${{ github.token }}
       - name: Check output of the action
         # the output should match the ref of the running action, since the last deploy was created from this workflow
         run: |
-          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.head_ref || github.ref_name }}" ] && [ "${{ steps.test_action.outputs.sha }}" = "${{ github.sha }}" ]
+          [ "${{ steps.test_action.outputs.ref }}" = "${{ github.head_ref || github.ref_name }}" ] && [ "${{ steps.test_action.outputs.sha }}" = "${{ github.event.pull_request.head.sha || github.event.after }}" ]
