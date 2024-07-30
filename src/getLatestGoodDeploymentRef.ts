@@ -48,6 +48,14 @@ export async function getLatestGoodDeploymentRef(args: {
     }
     `)
 
+  core.debug(
+    `All found deployments: \n${JSON.stringify(
+      repository?.deployments?.nodes ?? [],
+      undefined,
+      2
+    )}`
+  )
+
   const deploy = repository?.deployments?.nodes?.find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (d: any) => d?.latestStatus?.state === 'SUCCESS'
