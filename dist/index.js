@@ -37,6 +37,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getLatestGoodDeploymentRef = void 0;
 /* eslint-disable filenames/match-regex */
+const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 function getLatestGoodDeploymentRef(args) {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -61,12 +62,10 @@ function getLatestGoodDeploymentRef(args) {
           
           nodes{
             environment
+            commitOid
             ref {
               id
               name
-              target {
-                oid
-              }
             }
             latestStatus {
               state
@@ -76,12 +75,16 @@ function getLatestGoodDeploymentRef(args) {
       }
     }
     `);
-        const deploy = (_b = (_a = repository === null || repository === void 0 ? void 0 : repository.deployments) === null || _a === void 0 ? void 0 : _a.nodes) === null || _b === void 0 ? void 0 : _b.find(
+        core.debug(`All found deployments: \n${JSON.stringify((_b = (_a = repository === null || repository === void 0 ? void 0 : repository.deployments) === null || _a === void 0 ? void 0 : _a.nodes) !== null && _b !== void 0 ? _b : [], undefined, 2)}`);
+        const deploy = (_d = (_c = repository === null || repository === void 0 ? void 0 : repository.deployments) === null || _c === void 0 ? void 0 : _c.nodes) === null || _d === void 0 ? void 0 : _d.find(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (d) => { var _a; return ((_a = d === null || d === void 0 ? void 0 : d.latestStatus) === null || _a === void 0 ? void 0 : _a.state) === 'SUCCESS'; });
+        if (deploy) {
+            core.info(`found last successful deployment \n${JSON.stringify(deploy, undefined, 2)}`);
+        }
         return {
-            ref: (_d = (_c = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : undefined,
-            sha: (_g = (_f = (_e = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _e === void 0 ? void 0 : _e.target) === null || _f === void 0 ? void 0 : _f.oid) !== null && _g !== void 0 ? _g : undefined
+            ref: (_f = (_e = deploy === null || deploy === void 0 ? void 0 : deploy.ref) === null || _e === void 0 ? void 0 : _e.name) !== null && _f !== void 0 ? _f : undefined,
+            sha: (_g = deploy === null || deploy === void 0 ? void 0 : deploy.commitOid) !== null && _g !== void 0 ? _g : undefined
         };
     });
 }
