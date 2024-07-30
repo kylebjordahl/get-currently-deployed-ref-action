@@ -38,7 +38,7 @@ jobs:
       statuses: read
     steps:
       - uses: actions/checkout@v4
-      - run: npm run build && npm run package
+      # - run: npm ci && npm run build && npm run package
       - id: test_action
         uses: ./
         with:
