@@ -1,4 +1,5 @@
 /* eslint-disable filenames/match-regex */
+import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 export interface LatestGoodDeploymentRef {
@@ -33,12 +34,10 @@ export async function getLatestGoodDeploymentRef(args: {
           
           nodes{
             environment
+            commitOid
             ref {
               id
               name
-              target {
-                oid
-              }
             }
             latestStatus {
               state
@@ -49,13 +48,31 @@ export async function getLatestGoodDeploymentRef(args: {
     }
     `)
 
+  core.debug(
+    `All found deployments: \n${JSON.stringify(
+      repository?.deployments?.nodes ?? [],
+      undefined,
+      2
+    )}`
+  )
+
   const deploy = repository?.deployments?.nodes?.find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (d: any) => d?.latestStatus?.state === 'SUCCESS'
   )
 
+  if (deploy) {
+    core.info(
+      `found last successful deployment \n${JSON.stringify(
+        deploy,
+        undefined,
+        2
+      )}`
+    )
+  }
+
   return {
     ref: deploy?.ref?.name ?? undefined,
-    sha: deploy?.ref?.target?.oid ?? undefined
+    sha: deploy?.commitOid ?? undefined
   }
 }
